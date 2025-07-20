@@ -29,23 +29,23 @@ Before we dive into the code, let's understand some fundamental concepts:
 
 ### What is a Variable?
 A variable is like a labeled box that stores information.
-\`\`\`javascript
+```javascript
 let taskTitle = "Buy groceries"  // A box labeled 'taskTitle' containing the text "Buy groceries"
 let taskCount = 5                // A box labeled 'taskCount' containing the number 5
-\`\`\`
+```
 
 ### What is a Function?
 A function is like a recipe - it takes ingredients (inputs) and produces a result (output).
-\`\`\`javascript
+```javascript
 function addNumbers(a, b) {      // Recipe name: addNumbers, ingredients: a and b
     return a + b                 // Instructions: add a and b together
 }
 let result = addNumbers(3, 5)    // Using the recipe with ingredients 3 and 5, result is 8
-\`\`\`
+```
 
 ### What is a Class?
 A class is like a blueprint for creating objects. Think of it like a cookie cutter - you can use it to make many similar cookies (objects).
-\`\`\`javascript
+```javascript
 class Car {                      // Blueprint for making cars
     constructor(color, brand) {  // Instructions for what every car needs
         this.color = color
@@ -59,7 +59,7 @@ class Car {                      // Blueprint for making cars
 
 let myCar = new Car("red", "Toyota")  // Using the blueprint to make a specific car
 myCar.start()                         // Making my car do something
-\`\`\`
+```
 
 ### What is Object-Oriented Programming (OOP)?
 OOP is a way of organizing code by grouping related data and functions together into objects. It's like organizing your house - you keep kitchen items in the kitchen, bedroom items in the bedroom, etc.
@@ -76,7 +76,7 @@ The four main principles are:
 
 Our application is organized like a well-organized office building:
 
-\`\`\`
+```
 task-manager-oop/
 ├── index.js              # The main entrance - where everything starts
 ├── src/                  # The office floors - where the work happens
@@ -91,7 +91,7 @@ task-manager-oop/
 ├── package.json         # The building directory (project info)
 ├── tasks.json           # The main filing cabinet (data storage)
 └── tasks_backup.json    # The backup filing cabinet
-\`\`\`
+```
 
 ### Why This Structure?
 - **Separation of Concerns**: Each file has one main job
@@ -105,7 +105,7 @@ task-manager-oop/
 
 ### 1. package.json - The Project's ID Card
 
-\`\`\`json
+```json
 {
   "name": "task-manager-oop",           // What is this project called?
   "version": "1.0.0",                   // What version is it?
@@ -121,13 +121,13 @@ task-manager-oop/
     "chalk": "^4.1.2"                   // For colored text in terminal
   }
 }
-\`\`\`
+```
 
 **Think of it like**: A business card that tells you everything about the project.
 
 ### 2. index.js - The Main Entrance
 
-\`\`\`javascript
+```javascript
 #!/usr/bin/env node
 // This line tells the computer: "Use Node.js to run this file"
 
@@ -178,7 +178,7 @@ if (require.main === module) {
   // If someone runs 'node index.js', start the main function
   main()
 }
-\`\`\`
+```
 
 **Key Concepts Explained:**
 
@@ -192,7 +192,7 @@ if (require.main === module) {
 
 This file defines what a task is and what it can do.
 
-\`\`\`javascript
+```javascript
 // TASK CLASS DEFINITION
 class Task {
   // PRIVATE FIELDS (things only this task knows about itself)
@@ -366,7 +366,7 @@ class PersonalTask extends Task {
 
 // EXPORT THE CLASSES (share them with other files)
 module.exports = { Task, WorkTask, PersonalTask }
-\`\`\`
+```
 
 **Key OOP Concepts Demonstrated:**
 
@@ -379,7 +379,7 @@ module.exports = { Task, WorkTask, PersonalTask }
 
 This is like the office manager who coordinates all task-related activities.
 
-\`\`\`javascript
+```javascript
 // IMPORTS (calling in the helpers)
 const FileHandler = require("./FileHandler")
 const Validator = require("./Validator")
@@ -621,7 +621,7 @@ class TaskManager {
 }
 
 module.exports = TaskManager
-\`\`\`
+```
 
 **Key Concepts:**
 
@@ -634,7 +634,7 @@ module.exports = TaskManager
 
 This class handles all file operations - saving, loading, backing up data.
 
-\`\`\`javascript
+```javascript
 const fs = require("fs").promises  // File system operations (promises version for async/await)
 const path = require("path")       // Path manipulation utilities
 const { Task } = require("./Task") // Need Task class to recreate tasks from saved data
@@ -768,7 +768,7 @@ class FileHandler {
 }
 
 module.exports = FileHandler
-\`\`\`
+```
 
 **Key File System Concepts:**
 
@@ -783,7 +783,7 @@ module.exports = FileHandler
 
 This class ensures all data meets our standards before being processed.
 
-\`\`\`javascript
+```javascript
 class Validator {
   // All methods are static (belong to the class, not instances)
   // Think of it like a utility toolbox - you don't need to create a validator object
@@ -831,7 +831,7 @@ class Validator {
 }
 
 module.exports = Validator
-\`\`\`
+```
 
 **Key Validation Concepts:**
 
@@ -844,7 +844,7 @@ module.exports = Validator
 
 This is the most complex file - it handles all user interaction using modern CLI libraries.
 
-\`\`\`javascript
+```javascript
 // IMPORTS
 const { Command } = require("commander")    // For parsing command-line arguments
 const inquirer = require("inquirer")        // For interactive prompts
