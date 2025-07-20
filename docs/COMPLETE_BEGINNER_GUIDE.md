@@ -1064,7 +1064,306 @@ class CLI {
     this.displayTasks(tasks)
   }
 
-  // ... (other methods follow similar patterns)
+  async filterTasksFlow() {
+    console.log(chalk.yellow("\n🔍 Filter Tasks"))
+    console.log(chalk.yellow("==============="))
+
+    const { filterType } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "filterType",
+        message: "Filter by:",
+        choices: [
+          { name: "Category", value: "category" },
+          { name: "Priority", value: "priority" },
+          { name: "Status (completed/pending)", value: "status" },
+          { name: "Overdue tasks", value: "overdue" },
+          { name: "Due soon (within 7 days)", value: "dueSoon" },
+        ],
+      },
+    ])
+
+    let filteredTasks = []
+
+    switch (filterType) {
+      case "category":
+        const { category } = await inquirer.prompt([
+          {
+            type: "input",
+            name: "category",
+            message: "Enter category:",
+          },
+        ])
+        filteredTasks = this.taskManager.filterByCategory(category)
+        break
+
+      case "priority":
+        const { priority } = await inquirer.prompt([
+          {
+            type: "list",
+            name: "priority",
+            message: "Select priority:",
+            choices: ["High", "Medium", "Low"],
+          },
+        ])
+        filteredTasks = this.taskManager.filterByPriority(priority)
+        break
+
+      case "status":
+        const { completed } = await inquirer.prompt([
+          {
+            type: "list",
+            name: "completed",
+            message: "Show:",
+            choices: [
+              { name: "Completed tasks", value: true },
+              { name: "Pending tasks", value: false },
+            ],
+          },
+        ])
+        filteredTasks = this.taskManager.filterByStatus(completed)
+        break
+
+      case "overdue":
+        filteredTasks = this.taskManager.getOverdueTasks()
+        break
+
+      case "dueSoon":
+        filteredTasks = this.taskManager.getTasksDueSoon()
+        break
+    }
+
+    console.log(chalk.cyan(`\nFound ${filteredTasks.length} tasks:`))
+    this.displayTasks(filteredTasks)
+  }
+
+  async updateTaskFlow() {
+    const tasks = this.taskManager.getAllTasks()
+    if (tasks.length === 0) {
+      console.log(chalk.gray("No tasks available to update."))
+      return
+    }
+
+    // Show tasks and let user select one
+    const taskChoices = tasks.map((task, index) => ({
+      name: `${index + 1}. ${task.title} [${task.completed ? "✓" : "○"}]`,
+      value: task.id,
+    }))
+
+    const { taskId } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "taskId",
+        message: "Select task to update:",
+        choices: taskChoices,
+      },
+    ])
+
+    const task = this.taskManager.findTaskById(taskId)
+    if (!task) {
+      console.log(chalk.red("Task not found."))
+      return
+    }
+
+    // Ask what to update
+    const updates = await inquirer.prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "New title (leave empty to keep current):",
+        default: task.title,
+      },
+      {
+        type: "input",
+        name: "description",
+        message: "New description (leave empty to keep current):",
+        default: task.description,
+      },
+      {
+        type: "list",
+        name: "priority",
+        message: "New priority:",
+        choices: ["High", "Medium", "Low"],
+        default: task.priority,
+      },
+    ])
+
+    try {
+      await this.taskManager.updateTask(taskId, updates)
+      console.log(chalk.green("✅ Task updated successfully!"))
+    } catch (error) {
+      console.log(chalk.red(`❌ ${error.message}`))
+    }
+  }
+
+  async deleteTaskFlow() {
+    const tasks = this.taskManager.getAllTasks()
+    if (tasks.length === 0) {
+      console.log(chalk.gray("No tasks available to delete."))
+      return
+    }
+
+    const taskChoices = tasks.map((task, index) => ({
+      name: `${index + 1}. ${task.title} [${task.completed ? "✓" : "○"}]`,
+      value: task.id,
+    }))
+
+    const { taskId } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "taskId",
+        message: "Select task to delete:",
+        choices: taskChoices,
+      },
+    ])
+
+    const { confirm } = await inquirer.prompt([
+      {
+        type: "confirm",
+        name: "confirm",
+        message: "Are you sure you want to delete this task?",
+        default: false,
+      },
+    ])
+
+    if (confirm) {
+      try {
+        const deletedTask = await this.taskManager.deleteTask(taskId)
+        console.log(chalk.green(`✅ Task "${deletedTask.title}" deleted successfully!`))
+      } catch (error) {
+        console.log(chalk.red(`❌ ${error.message}`))
+      }
+    }
+  }
+
+  async toggleTaskFlow() {
+    const tasks = this.taskManager.getAllTasks()
+    if (tasks.length === 0) {
+      console.log(chalk.gray("No tasks available."))
+      return
+    }
+
+    const taskChoices = tasks.map((task, index) => ({
+      name: `${index + 1}. ${task.title} [${task.completed ? "✓" : "○"}]`,
+      value: task.id,
+    }))
+
+    const { taskId } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "taskId",
+        message: "Select task to toggle completion:",
+        choices: taskChoices,
+      },
+    ])
+
+    try {
+      const updatedTask = await this.taskManager.toggleTaskCompletion(taskId)
+      const status = updatedTask.completed ? "completed" : "pending"
+      console.log(chalk.green(`✅ Task "${updatedTask.title}" marked as ${status}!`))
+    } catch (error) {
+      console.log(chalk.red(`❌ ${error.message}`))
+    }
+  }
+
+  async searchTasksFlow() {
+    const { query } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "query",
+        message: "Enter search term:",
+        validate: (input) => input.trim().length > 0 || "Search term is required",
+      },
+    ])
+
+    const results = this.taskManager.searchTasks(query)
+    console.log(chalk.cyan(`\nFound ${results.length} tasks matching "${query}":`))
+    this.displayTasks(results)
+  }
+
+  async showStatistics() {
+    console.log(chalk.yellow("\n📊 Task Statistics"))
+    console.log(chalk.yellow("=================="))
+
+    const stats = this.taskManager.getTaskStats()
+    
+    console.log(chalk.blue(`Total Tasks: ${stats.total}`))
+    console.log(chalk.green(`Completed: ${stats.completed}`))
+    console.log(chalk.yellow(`Pending: ${stats.pending}`))
+    console.log(chalk.red(`Overdue: ${stats.overdue}`))
+    console.log(chalk.orange(`Due Soon: ${stats.dueSoon}`))
+    console.log(chalk.magenta(`Completion Rate: ${stats.completionRate}%`))
+  }
+
+  async exportImportFlow() {
+    const { action } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "action",
+        message: "Choose action:",
+        choices: [
+          { name: "📤 Export Tasks", value: "export" },
+          { name: "📥 Import Tasks", value: "import" },
+        ],
+      },
+    ])
+
+    if (action === "export") {
+      const { filePath } = await inquirer.prompt([
+        {
+          type: "input",
+          name: "filePath",
+          message: "Export file path:",
+          default: "./exports/tasks_export.json",
+        },
+      ])
+
+      try {
+        await this.taskManager.exportTasks(filePath)
+        console.log(chalk.green(`✅ Tasks exported to ${filePath}`))
+      } catch (error) {
+        console.log(chalk.red(`❌ Export failed: ${error.message}`))
+      }
+    } else {
+      const { filePath } = await inquirer.prompt([
+        {
+          type: "input",
+          name: "filePath",
+          message: "Import file path:",
+        },
+      ])
+
+      try {
+        const importedCount = await this.taskManager.importTasks(filePath)
+        console.log(chalk.green(`✅ Imported ${importedCount} tasks from ${filePath}`))
+      } catch (error) {
+        console.log(chalk.red(`❌ Import failed: ${error.message}`))
+      }
+    }
+  }
+
+  // Command-line mode methods
+  async addTaskCommand() {
+    await this.taskManager.initialize()
+    await this.addTaskFlow()
+  }
+
+  async listTasksCommand() {
+    await this.taskManager.initialize()
+    await this.viewAllTasks()
+  }
+
+  async searchTasksCommand(query) {
+    await this.taskManager.initialize()
+    const results = this.taskManager.searchTasks(query)
+    console.log(chalk.cyan(`Found ${results.length} tasks matching "${query}":`))
+    this.displayTasks(results)
+  }
+
+  async showStatsCommand() {
+    await this.taskManager.initialize()
+    await this.showStatistics()
+  }
 
   displayTasks(tasks) {
     // Display tasks with colors and formatting
@@ -1106,7 +1405,7 @@ class CLI {
 }
 
 module.exports = CLI
-\`\`\`
+```
 
 **Key CLI Concepts:**
 
@@ -1123,16 +1422,16 @@ module.exports = CLI
 ### The Application Flow
 
 1. **Startup** (`index.js`):
-   \`\`\`
+   ```
    User runs: npm start
    ↓
    index.js creates CLI instance
    ↓
    CLI.start() is called
-   \`\`\`
+   ```
 
 2. **Initialization** (`CLI.js` → `TaskManager.js` → `FileHandler.js`):
-   \`\`\`
+   ```
    CLI initializes TaskManager
    ↓
    TaskManager initializes FileHandler
@@ -1140,19 +1439,19 @@ module.exports = CLI
    FileHandler loads existing tasks from file
    ↓
    Tasks are converted from JSON to Task objects
-   \`\`\`
+   ```
 
 3. **User Interaction** (`CLI.js`):
-   \`\`\`
+   ```
    CLI shows interactive menu
    ↓
    User selects an action
    ↓
    CLI calls appropriate method
-   \`\`\`
+   ```
 
 4. **Task Operations** (`TaskManager.js`):
-   \`\`\`
+   ```
    CLI calls TaskManager method
    ↓
    TaskManager validates data (using Validator)
@@ -1160,10 +1459,10 @@ module.exports = CLI
    TaskManager creates/modifies Task objects
    ↓
    TaskManager saves changes (using FileHandler)
-   \`\`\`
+   ```
 
 5. **Data Persistence** (`FileHandler.js`):
-   \`\`\`
+   ```
    TaskManager calls FileHandler.saveTasks()
    ↓
    FileHandler creates backup
@@ -1171,21 +1470,21 @@ module.exports = CLI
    FileHandler converts Task objects to JSON
    ↓
    FileHandler writes JSON to file
-   \`\`\`
+   ```
 
 ### Data Flow Diagram
 
-\`\`\`
+```
 User Input → CLI → TaskManager → Validator
                       ↓
                    Task Objects
                       ↓
                   FileHandler → JSON Files
-\`\`\`
+```
 
 ### Object Relationships
 
-\`\`\`
+```
 CLI
 ├── TaskManager
 │   ├── FileHandler
@@ -1194,14 +1493,14 @@ CLI
 │       ├── Task
 │       ├── WorkTask (extends Task)
 │       └── PersonalTask (extends Task)
-\`\`\`
+```
 
 ---
 
 ## Running the Application
 
 ### Installation
-\`\`\`bash
+```bash
 # Install dependencies
 npm install
 
@@ -1210,10 +1509,10 @@ npm install
 # - inquirer: For interactive prompts  
 # - chalk: For colored output
 # - jest: For testing (development only)
-\`\`\`
+```
 
 ### Running
-\`\`\`bash
+```bash
 # Interactive mode
 npm start
 
@@ -1222,10 +1521,10 @@ node index.js add          # Add a task
 node index.js list         # List all tasks
 node index.js search work  # Search for "work"
 node index.js stats        # Show statistics
-\`\`\`
+```
 
 ### Testing
-\`\`\`bash
+```bash
 # Run all tests
 npm test
 
@@ -1233,7 +1532,7 @@ npm test
 # - Finds all files ending in .test.js
 # - Runs the test functions
 # - Reports results
-\`\`\`
+```
 
 ---
 
