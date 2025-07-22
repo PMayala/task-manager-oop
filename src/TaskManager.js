@@ -1,4 +1,4 @@
-// src/TaskManager.js - Main Task Management Class
+// Main Task Management Class
 const FileHandler = require("./FileHandler")
 const Validator = require("./Validator")
 const { Task, WorkTask, PersonalTask } = require("./Task")

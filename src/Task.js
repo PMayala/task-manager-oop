@@ -1,4 +1,4 @@
-// src/Task.js - Task Class Implementation
+// Task Class Implementation
 class Task {
   #id
   #title

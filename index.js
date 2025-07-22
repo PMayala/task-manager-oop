@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// index.js - Main application entry point
+// Main application entry point
 const { Task, WorkTask, PersonalTask } = require("./src/Task")
 const TaskManager = require("./src/TaskManager")
 const FileHandler = require("./src/FileHandler")

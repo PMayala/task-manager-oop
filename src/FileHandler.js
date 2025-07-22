@@ -1,4 +1,4 @@
-// src/FileHandler.js - File Management Class
+// File Management Class
 const fs = require("fs").promises
 const path = require("path")
 const { Task } = require("./Task")

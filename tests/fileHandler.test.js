@@ -1,4 +1,3 @@
-// tests/fileHandler.test.js
 const { FileHandler } = require("../index.js")
 const fs = require("fs").promises
 

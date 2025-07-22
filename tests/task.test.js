@@ -1,4 +1,3 @@
-// tests/task.test.js
 const { Task, WorkTask, PersonalTask } = require("../index.js")
 
 describe("Task Class", () => {

@@ -1,4 +1,4 @@
-// src/Validator.js - Validation Class
+// Validation Class
 class Validator {
   static validateTaskData(data) {
     const errors = []

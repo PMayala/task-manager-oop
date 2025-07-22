@@ -1,4 +1,4 @@
-// src/CLI.js - Command Line Interface using Commander.js, Inquirer.js, and Chalk
+// Command Line Interface using Commander.js, Inquirer.js, and Chalk
 const { Command } = require("commander")
 const inquirer = require("inquirer")
 const chalk = require("chalk")

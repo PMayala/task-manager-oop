@@ -1,4 +1,3 @@
-// tests/validator.test.js
 const { Validator } = require("../index.js")
 
 describe("Validator Class", () => {
