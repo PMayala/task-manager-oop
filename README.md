@@ -8,6 +8,19 @@ A comprehensive command-line task management application built with Object-Orien
 - **Kevine Umutoni**
 - **Plamedi Mayala**
 
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Object-Oriented Design](#object-oriented-design)
+- [Data Storage](#data-storage)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Project Overview
 
 This Task Manager application demonstrates advanced Object-Oriented Programming concepts while providing a practical solution for personal productivity and task organization. Users can create, manage, and track tasks through an intuitive command-line interface with persistent data storage.
@@ -31,200 +44,242 @@ This Task Manager application demonstrates advanced Object-Oriented Programming 
 - 🔒 **Data Validation**: Comprehensive input validation and error handling
 - 🔄 **Auto-backup**: Automatic backup system prevents data loss
 
-## Installation & Setup
+## Prerequisites
 
-### Prerequisites
-- Node.js (version 14.0.0 or higher)
-- npm (Node Package Manager)
+Before running this application, ensure you have:
+- **Node.js** (version 14.0.0 or higher)
+- **npm** (Node Package Manager)
 
-### Installation Steps
+You can check your versions by running:
+```bash
+node --version
+npm --version
+```
 
-1. **Install Dependencies**
-\`\`\`bash
-npm install
-\`\`\`
+## Installation
 
-2. **Run the Application**
-\`\`\`bash
-npm start
-\`\`\`
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd task-manager-oop
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run the application**
+   ```bash
+   npm start
+   ```
 
 ### Development Setup
 
-1. **Install Development Dependencies**
-\`\`\`bash
+For development work, you can use these additional commands:
+
+```bash
+# Install development dependencies
 npm install --dev
-\`\`\`
 
-2. **Run with Auto-restart (Development)**
-\`\`\`bash
+# Run with auto-restart during development
 npm run dev
-\`\`\`
 
-3. **Run Tests**
-\`\`\`bash
+# Run tests
 npm test
-\`\`\`
 
-4. **Code Linting**
-\`\`\`bash
+# Code linting
 npm run lint
-\`\`\`
 
-5. **Code Formatting**
-\`\`\`bash
+# Code formatting
 npm run format
-\`\`\`
+```
 
-## Usage Guide
+## Usage
 
-### Starting the Application
-Run \`npm start\` to launch the Task Manager. You'll see the main menu with the following options:
+### Getting Started
+
+1. Launch the application:
+   ```bash
+   npm start
+   ```
+
+2. You'll see the main menu with numbered options. Enter the number corresponding to your desired action.
 
 ### Main Menu Options
 
-1. **Add Task** - Create a new task with full details
-2. **View All Tasks** - Display all tasks in your list
-3. **View Tasks by Filter** - Filter tasks by various criteria
-4. **Update Task** - Modify existing task properties
-5. **Delete Task** - Remove tasks from your list
-6. **Toggle Task Completion** - Mark tasks as complete/incomplete
-7. **Search Tasks** - Find tasks using keywords
-8. **Task Statistics** - View productivity analytics
-9. **Export/Import** - Backup or restore task data
-0. **Exit** - Close the application
+| Option | Description |
+|--------|-------------|
+| 1 | **Add Task** - Create a new task with full details |
+| 2 | **View All Tasks** - Display all tasks in your list |
+| 3 | **View Tasks by Filter** - Filter tasks by various criteria |
+| 4 | **Update Task** - Modify existing task properties |
+| 5 | **Delete Task** - Remove tasks from your list |
+| 6 | **Toggle Task Completion** - Mark tasks as complete/incomplete |
+| 7 | **Search Tasks** - Find tasks using keywords |
+| 8 | **Task Statistics** - View productivity analytics |
+| 9 | **Export/Import** - Backup or restore task data |
+| 0 | **Exit** - Close the application |
 
-### Task Properties
+### Creating Tasks
 
-When creating tasks, you can specify:
-- **Title**: Required task name
-- **Description**: Optional detailed description
-- **Priority**: High, Medium, or Low (default: Medium)
-- **Due Date**: Optional deadline (YYYY-MM-DD format)
-- **Category**: Custom category for organization (default: General)
-- **Task Type**: Regular, Work, or Personal tasks
+When adding a new task, you'll be prompted to enter:
 
-### Filtering Options
+- **Title** (required): A brief name for your task
+- **Description** (optional): Detailed information about the task
+- **Priority** (optional): High, Medium, or Low (default: Medium)
+- **Due Date** (optional): Deadline in YYYY-MM-DD format
+- **Category** (optional): Custom category for organization (default: General)
+- **Task Type**: Choose between Regular, Work, or Personal tasks
 
-- **By Category**: Show tasks from specific categories
-- **By Priority**: Filter by High, Medium, or Low priority
-- **By Status**: Show completed or incomplete tasks
+### Filtering Tasks
+
+You can filter tasks by:
+- **Category**: Show tasks from specific categories
+- **Priority**: Filter by High, Medium, or Low priority
+- **Status**: Show completed or incomplete tasks
 - **Overdue Tasks**: Display tasks past their due date
 - **Due Soon**: Show tasks due within the next 7 days
 
-## File Structure
+### Searching Tasks
 
-\`\`\`
+Use the search function to find tasks by entering keywords that match:
+- Task titles
+- Task descriptions
+- Categories
+
+## Project Structure
+
+```
 task-manager-oop/
-├── index.js              # Main application file
+├── index.js              # Main application entry point
 ├── src/                  # Source code directory
 │   ├── Task.js          # Task class and specialized classes
 │   ├── TaskManager.js   # Main task management logic
 │   ├── FileHandler.js   # File I/O operations
-│   ├── Validator.js     # Data validation
+│   ├── Validator.js     # Data validation utilities
 │   └── CLI.js           # Command-line interface
-├── package.json          # Project configuration
-├── README.md            # Project documentation
+├── package.json          # Project configuration and dependencies
+├── README.md            # This documentation file
 ├── tasks.json           # Task data storage (auto-generated)
-├── tasks_backup.json    # Automatic backup file
-├── tests/               # Test files
+├── tasks_backup.json    # Automatic backup file (auto-generated)
+├── tests/               # Test files directory
+│   ├── task.test.js     # Task class tests
+│   ├── taskManager.test.js # TaskManager tests
+│   ├── fileHandler.test.js # File operations tests
+│   └── validator.test.js # Validation tests
 ├── docs/                # Additional documentation
-└── exports/             # Exported task files
-\`\`\`
+└── exports/             # Directory for exported task files
+```
 
 ## Object-Oriented Design
 
+This application demonstrates key OOP principles through its class structure:
+
 ### Core Classes
 
-#### 1. Task Class
-\`\`\`javascript
+#### Task Class
+The base class for all tasks with encapsulation using private fields:
+
+```javascript
 class Task {
-    // Private fields with encapsulation
-    #id, #title, #description, #priority, #dueDate, #category, #completed, #createdAt
+    // Private fields for data protection
+    #id; #title; #description; #priority; #dueDate; 
+    #category; #completed; #createdAt;
     
-    // Public methods
+    // Public methods for controlled access
     markComplete()
     markIncomplete()
     isOverdue()
     getDaysUntilDue()
+    // ... getters and setters
 }
-\`\`\`
+```
 
-#### 2. Specialized Task Classes (Inheritance)
-\`\`\`javascript
+#### Specialized Task Classes
+Inheritance is demonstrated through specialized task types:
+
+```javascript
 class WorkTask extends Task {
-    // Additional work-specific properties and methods
+    // Work-specific properties and methods
 }
 
 class PersonalTask extends Task {
-    // Additional personal task features
+    // Personal task specific features
 }
-\`\`\`
+```
 
-#### 3. TaskManager Class
-\`\`\`javascript
+#### TaskManager Class
+Handles all task management operations:
+
+```javascript
 class TaskManager {
-    // Main business logic
-    addTask(), updateTask(), deleteTask()
-    searchTasks(), filterTasks(), sortTasks()
-    getTaskStats(), exportTasks(), importTasks()
+    addTask(taskData)
+    updateTask(id, updates)
+    deleteTask(id)
+    searchTasks(keyword)
+    filterTasks(criteria)
+    sortTasks(sortBy)
+    getTaskStats()
+    exportTasks(filename)
+    importTasks(filename)
 }
-\`\`\`
+```
 
-#### 4. FileHandler Class
-\`\`\`javascript
+#### FileHandler Class
+Manages all file operations:
+
+```javascript
 class FileHandler {
-    // File I/O operations
-    loadTasks(), saveTasks()
-    createBackup(), exportTasks(), importTasks()
+    loadTasks()
+    saveTasks(tasks)
+    createBackup()
+    exportTasks(tasks, filename)
+    importTasks(filename)
 }
-\`\`\`
+```
 
-#### 5. Validator Class
-\`\`\`javascript
+#### Validator Class
+Handles data validation and sanitization:
+
+```javascript
 class Validator {
-    // Data validation and sanitization
-    validateTaskData(), validateId(), sanitizeInput()
+    validateTaskData(data)
+    validateId(id)
+    sanitizeInput(input)
+    isValidDate(dateString)
 }
-\`\`\`
+```
 
-#### 6. CLI Class
-\`\`\`javascript
+#### CLI Class
+Manages the command-line interface:
+
+```javascript
 class CLI {
-    // Command-line interface management
-    showMainMenu(), handleMenuChoice()
-    addTaskFlow(), updateTaskFlow(), deleteTaskFlow()
+    showMainMenu()
+    handleMenuChoice(choice)
+    addTaskFlow()
+    updateTaskFlow()
+    deleteTaskFlow()
 }
-\`\`\`
+```
 
 ### OOP Principles Demonstrated
 
-#### Encapsulation
-- Private fields (\`#\`) protect sensitive data
-- Public methods provide controlled access
-- Getter/setter methods with validation
+**Encapsulation**: Private fields protect data integrity, with controlled access through public methods.
 
-#### Inheritance
-- Base \`Task\` class with specialized subclasses
-- Common interface for different task types
-- Code reuse through inheritance hierarchy
+**Inheritance**: Specialized task classes inherit from the base Task class, promoting code reuse.
 
-#### Polymorphism
-- Method overriding in specialized task classes
-- Common interface for various task operations
-- Dynamic behavior based on task type
+**Polymorphism**: Different task types can be handled uniformly through the same interface.
 
-#### Abstraction
-- Abstract interfaces for file operations
-- Simplified public API hiding complex internal operations
-- Clear separation of concerns
+**Abstraction**: Complex operations are hidden behind simple, intuitive method calls.
 
 ## Data Storage
 
-### JSON File Format
-Tasks are stored in JSON format with the following structure:
+### File Format
+Tasks are stored in JSON format in the `tasks.json` file:
 
-\`\`\`json
+```json
 [
   {
     "id": "task_1234567890_abc123",
@@ -237,95 +292,143 @@ Tasks are stored in JSON format with the following structure:
     "createdAt": "2024-12-01T10:30:00.000Z"
   }
 ]
-\`\`\`
+```
 
 ### Backup System
 - Automatic backup creation before each save operation
-- Backup file: \`tasks_backup.json\`
-- Automatic recovery if main file is corrupted
-- Manual export/import functionality for additional backups
+- Backup stored in `tasks_backup.json`
+- Automatic recovery if main file becomes corrupted
+- Manual export/import for additional backups
 
-## Error Handling
-
-The application includes comprehensive error handling:
-
-- **File Operation Errors**: Graceful handling of file read/write issues
-- **Data Validation**: Input validation with clear error messages
-- **Backup Recovery**: Automatic fallback to backup files
-- **User Input Errors**: Validation of menu choices and task data
-- **Date Format Validation**: Proper date parsing and validation
+### Error Handling
+The application includes comprehensive error handling for:
+- File operation failures
+- Invalid user input
+- Data corruption
+- Network issues (future cloud integration)
+- Date format validation
 
 ## Testing
 
 ### Running Tests
-\`\`\`bash
+Execute the test suite with:
+```bash
 npm test
-\`\`\`
+```
 
 ### Test Coverage
-The application includes tests for:
-- Task class methods and validation
+Tests cover:
+- Task class methods and properties
 - TaskManager CRUD operations
-- File handling operations
+- File handling and backup systems
 - Search and filter functionality
 - Data validation and sanitization
+- Error handling scenarios
 
-### Test Files Structure
-\`\`\`
-tests/
-├── task.test.js         # Task class tests
-├── taskManager.test.js  # TaskManager tests
-├── fileHandler.test.js  # File operations tests
-└── validator.test.js    # Validation tests
-\`\`\`
+### Writing New Tests
+When adding new features, ensure you:
+1. Write unit tests for new methods
+2. Test error conditions
+3. Verify data persistence
+4. Test user input validation
 
-## Performance Features
+## Performance Considerations
 
-- **Efficient Filtering**: Optimized search and filter algorithms
-- **Memory Management**: Proper object cleanup and memory usage
-- **File I/O Optimization**: Minimized file operations with batching
-- **Error Recovery**: Robust error handling with graceful degradation
+- **Efficient Search**: Optimized algorithms for filtering and searching large task lists
+- **Memory Management**: Proper cleanup of objects and resources
+- **File I/O**: Minimized disk operations through intelligent caching
+- **Error Recovery**: Graceful handling of failures without data loss
 
 ## Security Features
 
-- **Input Sanitization**: Protection against malicious input
-- **Data Validation**: Comprehensive validation of all user inputs
-- **File Path Security**: Safe file operations with path validation
-- **Error Information**: Secure error messages without sensitive data exposure
-
-## Future Enhancements
-
-Planned features for future versions:
-- 📱 Web interface integration
-- 🔄 Real-time collaboration features
-- 📊 Advanced analytics and reporting
-- 🔔 Notification system for due dates
-- 📱 Mobile application companion
-- ☁️ Cloud storage integration
+- **Input Sanitization**: All user inputs are validated and sanitized
+- **File Path Validation**: Safe file operations prevent path traversal attacks
+- **Data Integrity**: Validation ensures data consistency
+- **Error Messages**: Secure error reporting without exposing sensitive information
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch (\`git checkout -b feature/AmazingFeature\`)
-3. Commit your changes (\`git commit -m 'Add some AmazingFeature'\`)
-4. Push to the branch (\`git push origin feature/AmazingFeature\`)
-5. Open a Pull Request
+We welcome contributions! Please follow these steps:
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Make your changes**
+4. **Write or update tests**
+5. **Ensure all tests pass**
+   ```bash
+   npm test
+   ```
+6. **Commit your changes**
+   ```bash
+   git commit -m "Add: brief description of changes"
+   ```
+7. **Push to your fork**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+8. **Create a Pull Request**
+
+### Code Style Guidelines
+- Use meaningful variable and function names
+- Follow existing code formatting
+- Add comments for complex logic
+- Write tests for new features
+- Update documentation as needed
+
+## Future Enhancements
+
+Planned features for upcoming versions:
+- 📱 Web-based interface
+- 🔄 Real-time collaboration
+- 📊 Advanced analytics dashboard
+- 🔔 Due date notifications
+- ☁️ Cloud storage integration
+- 📱 Mobile companion app
+- 🔗 Third-party integrations (Google Calendar, Slack)
+
+## Troubleshooting
+
+### Common Issues
+
+**Application won't start**
+- Ensure Node.js is installed and updated
+- Run `npm install` to install dependencies
+- Check for error messages in the console
+
+**Tasks not saving**
+- Verify write permissions in the application directory
+- Check available disk space
+- Look for backup files if main storage fails
+
+**Invalid date formats**
+- Use YYYY-MM-DD format for dates
+- Ensure dates are realistic (not in the past for due dates)
+
+**Search not working**
+- Check for typos in search terms
+- Try broader search terms
+- Ensure tasks exist in the specified category
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Support
 
-For questions or support, please contact the development team:
-- Create an issue on GitHub
-- Contact team members through the course platform
+For questions, bug reports, or feature requests:
+- 📧 Contact the development team through your course platform
+- 🐛 Create an issue on the project repository
+- 📖 Check the documentation in the `docs/` directory
 
 ## Acknowledgments
 
-- Course instructors for guidance on OOP principles
-- Node.js community for excellent documentation
-- Team members for collaborative development effort
+- Course instructors for guidance on OOP principles and best practices
+- Node.js community for excellent documentation and tools
+- Team members for collaborative development and peer review
+- Beta testers for valuable feedback and suggestions
 
 ---
 
