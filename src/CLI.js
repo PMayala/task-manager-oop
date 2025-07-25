@@ -62,6 +62,7 @@ class CLI {
             choices: [
               { name: "➕ Add Task", value: "add" },
               { name: "📋 View All Tasks", value: "view" },
+              { name: "🔍 Filter Tasks", value: "filter" },
               { name: "👋 Exit", value: "exit" },
             ],
           },
@@ -86,6 +87,9 @@ class CLI {
         break
       case "view":
         await this.viewAllTasks()
+        break
+      case "filter":
+        await this.filterTasksFlow()
         break
       default:
         console.log("Feature not implemented yet.")
@@ -166,6 +170,66 @@ class CLI {
     }
 
     this.displayTasks(tasks)
+  }
+
+  async filterTasksFlow() {
+    const { filterType } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "filterType",
+        message: "How would you like to filter tasks?",
+        choices: [
+          { name: "By Category", value: "category" },
+          { name: "By Priority", value: "priority" },
+          { name: "By Status (Complete/Incomplete)", value: "status" },
+          { name: "Overdue Tasks", value: "overdue" },
+          { name: "Due Soon (Next 7 days)", value: "dueSoon" },
+        ],
+      },
+    ])
+
+    let filteredTasks = []
+
+    switch (filterType) {
+      case "category":
+        const { category } = await inquirer.prompt([{ type: "input", name: "category", message: "Enter category:" }])
+        filteredTasks = this.taskManager.filterByCategory(category)
+        break
+      case "priority":
+        const { priority } = await inquirer.prompt([
+          {
+            type: "list",
+            name: "priority",
+            message: "Select priority:",
+            choices: ["High", "Medium", "Low"],
+          },
+        ])
+        filteredTasks = this.taskManager.filterByPriority(priority)
+        break
+      case "status":
+        const { showCompleted } = await inquirer.prompt([
+          {
+            type: "confirm",
+            name: "showCompleted",
+            message: "Show completed tasks?",
+            default: false,
+          },
+        ])
+        filteredTasks = this.taskManager.filterByStatus(showCompleted)
+        break
+      case "overdue":
+        filteredTasks = this.taskManager.getOverdueTasks()
+        break
+      case "dueSoon":
+        filteredTasks = this.taskManager.getTasksDueSoon()
+        break
+    }
+
+    if (filteredTasks.length === 0) {
+      console.log(chalk.gray("No tasks match the filter criteria."))
+    } else {
+      this.displayTasks(filteredTasks)
+    }
   }
 
   displayTasks(tasks) {
